@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { analyzeText, csvCell, parseCSV } from '../src/utils.js';
+import { analyzeText, csvCell, parseCSV, compareText } from '../src/utils.js';
 
 test('parses simple CSV rows', () => {
   assert.deepEqual(parseCSV('name,age\nAsha,29\nRavi,31'), [['name','age'],['Asha','29'],['Ravi','31']]);
@@ -52,4 +52,17 @@ test('removes duplicate lines while preserving first occurrence', () => {
 test('trims or reverses lines', () => {
   assert.equal(transformLines('  alpha  \n beta ', 'trim'), 'alpha\nbeta');
   assert.equal(transformLines('a\nb\nc', 'reverse'), 'c\nb\na');
+});
+
+
+test('compares text line by line and summarizes changes', () => {
+  assert.equal(compareText('alpha\nbeta\ndelta', 'alpha\ngamma\ndelta'), 'Summary: 1 added, 1 removed, 2 unchanged lines\n\n  alpha\n- beta\n+ gamma\n  delta');
+});
+
+test('detects inserted and deleted lines without marking later lines as changed', () => {
+  assert.equal(compareText('one\nthree', 'one\ntwo\nthree'), 'Summary: 1 added, 0 removed, 2 unchanged lines\n\n  one\n+ two\n  three');
+});
+
+test('compares empty text safely', () => {
+  assert.equal(compareText('', ''), 'Summary: 0 added, 0 removed, 1 unchanged lines\n\n  ');
 });
