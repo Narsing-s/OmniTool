@@ -4,7 +4,7 @@ Useful tools for everyday work in one responsive workspace. Built with React and
 
 ## Included
 - Responsive dashboard, search and category filters
-- Text analyzer (word/character/line counts and UTF-8 size), text case converter and text comparison
+- Text analyzer (word/character/line counts and UTF-8 size), line organizer (sort, deduplicate, trim or reverse lines), text case converter and text comparison
 - JSON formatter/validator and Base64 encoder/decoder
 - Random password generator, percentage calculator and EMI calculator
 - Unix timestamp/date converter, QR code generator with PNG download, URL encoder/decoder, HTML escape/unescape and UUID generator
