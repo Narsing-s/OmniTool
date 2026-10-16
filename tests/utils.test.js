@@ -35,7 +35,7 @@ test('quotes CSV values that contain separators or quotes', () => {
 
 test('converts arrays of objects to CSV with unioned columns', () => {
   assert.equal(convertJsonToCSV([{ name: 'Asha', note: 'hello, world' }, { name: 'Ravi', age: 29 }]),
-    'name,note,age\\nAsha,"hello, world",\\nRavi,,29');
+    'name,note,age\nAsha,"hello, world",\nRavi,,29');
 });
 
 test('rejects invalid JSON-to-CSV row shapes instead of silently dropping data', () => {
