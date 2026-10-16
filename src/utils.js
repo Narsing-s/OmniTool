@@ -72,7 +72,7 @@ export function compareText(left, right) {
       if (i < a.length && j < b.length && a[i] === b[j]) {
         edits.push({ type: 'same', text: a[i++] });
         j++;
-      } else if (j < b.length && (i === a.length || dp[i][j + 1] >= dp[i + 1][j])) {
+      } else if (j < b.length && (i === a.length || dp[i][j + 1] > dp[i + 1][j])) {
         edits.push({ type: 'added', text: b[j++] });
       } else {
         edits.push({ type: 'removed', text: a[i++] });
