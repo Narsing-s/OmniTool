@@ -5,3 +5,5 @@
 @media(max-width:520px){.content{padding:13px 12px}.hero{padding:24px 18px;min-height:330px;align-items:flex-start}.hero-copy{width:100%}.hero-art{width:100%;right:-20%;top:100px;opacity:.16}.hero h1{font-size:35px;letter-spacing:-1.5px}.hero p{font-size:11px}.search{height:43px}.search kbd{display:none}.trust{gap:10px}.grid{gap:8px}.card{padding:12px}.card h3{font-size:11px}.card p{font-size:9px;height:45px}.tool-icon{width:34px;height:34px}.pill{padding:7px 9px;font-size:9px}.section-head h2{font-size:18px}.ready{display:none}.banner{padding:13px}.banner button{margin-left:0;width:100%;justify-content:center}footer{flex-wrap:wrap;font-size:8px}.panel{padding:15px}.tool-heading h1{font-size:22px}.numbers{grid-template-columns:1fr}.modal{padding:22px}}
 
 .qr-output{display:block;width:min(320px,100%);height:auto;margin:18px auto;background:#fff;padding:12px;border-radius:12px}
+
+.qr-download{display:table;margin:0 auto 12px;text-decoration:none;text-align:center}
