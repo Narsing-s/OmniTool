@@ -1,7 +1,7 @@
 import React,{useEffect,useMemo,useState} from 'react';
 import QRCode from 'qrcode';
 import {createRoot} from 'react-dom/client';
-import {Search,Sparkles,ArrowUpRight,Star,ShieldCheck,Zap,FileText,Code2,Calculator,QrCode,Clock3,Sun,Moon,Menu,X,Copy,Check,Trash2,Link2,Fingerprint} from 'lucide-react';
+import {Search,Sparkles,ArrowUpRight,Star,ShieldCheck,Zap,FileText,Code2,Calculator,QrCode,Clock3,Sun,Moon,Menu,X,Copy,Check,Trash2,Link2,Fingerprint,FileSpreadsheet,Hash,ScanText,Palette,Download,Upload} from 'lucide-react';
 const tools=[
 {id:'words',name:'Word counter',desc:'Count words, characters and reading time.',cat:'Writing',icon:FileText,color:'violet'},
 {id:'case',name:'Text case converter',desc:'Switch between upper, lower and title case.',cat:'Writing',icon:Sparkles,color:'pink'},
@@ -16,7 +16,13 @@ const tools=[
 {id:'url',name:'URL encoder / decoder',desc:'Safely encode or decode URL text.',cat:'Developer',icon:Link2,color:'blue'},
 {id:'uuid',name:'UUID generator',desc:'Generate random unique identifiers locally.',cat:'Developer',icon:Fingerprint,color:'green'},
 {id:'html',name:'HTML escape tool',desc:'Escape or unescape HTML special characters.',cat:'Developer',icon:Code2,color:'violet'},
-{id:'checklist',name:'Quick checklist',desc:'Create a simple task checklist.',cat:'Productivity',icon:Check,color:'green'}
+{id:'checklist',name:'Quick checklist',desc:'Create a simple task checklist.',cat:'Productivity',icon:Check,color:'green'},
+{id:'csvjson',name:'CSV ↔ JSON converter',desc:'Convert CSV tables and JSON arrays locally.',cat:'Developer',icon:FileSpreadsheet,color:'green'},
+{id:'hash',name:'Text SHA-256 hash',desc:'Calculate a SHA-256 hash locally.',cat:'Privacy',icon:Hash,color:'blue'},
+{id:'size',name:'Text size analyzer',desc:'Inspect character counts and UTF-8 byte size.',cat:'Writing',icon:ScanText,color:'violet'},
+{id:'regex',name:'Regex tester',desc:'Test regular expressions against sample text.',cat:'Developer',icon:Code2,color:'pink'},
+{id:'markdown',name:'Markdown preview',desc:'Write Markdown and preview headings and lists.',cat:'Writing',icon:FileText,color:'blue'},
+{id:'color',name:'Color converter',desc:'Convert HEX and RGB color values.',cat:'Everyday',icon:Palette,color:'orange'}
 ];
 const cats=['All tools','Writing','Developer','Privacy','Everyday','Calculators','Productivity'];
 function read(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}}
