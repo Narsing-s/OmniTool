@@ -26,6 +26,8 @@ const tools=[
 ];
 const cats=['All tools','Writing','Developer','Privacy','Everyday','Calculators','Productivity'];
 function read(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}}
+function csvCell(v){const s=typeof v==='string'?v:JSON.stringify(v);return /[\",\r\n]/.test(s)?'\"'+s.replace(/\"/g,'\"\"')+'\"':s}
+function parseCSV(text){const rows=[];let row=[],cell='',quoted=false;for(let i=0;i<text.length;i++){const c=text[i];if(quoted){if(c==='\"'&&text[i+1]==='\"'){cell+='\"';i++}else if(c==='\"')quoted=false;else cell+=c}else if(c==='\"'&&cell==='')quoted=true;else if(c===','){row.push(cell);cell=''}else if(c==='\n'){row.push(cell.replace(/\r$/,''));rows.push(row);row=[];cell=''}else cell+=c}if(quoted)throw Error('CSV contains an unclosed quoted field.');if(cell!==''||row.length){row.push(cell.replace(/\r$/,''));rows.push(row)}return rows}
 export default function App(){
 const [query,SQ]=useState(''),[cat,SC]=useState('All tools'),[active,SA]=useState(null),[dark,SD]=useState(()=>read('omni:dark',true)),[fav,SF]=useState(()=>read('omni:fav',[])),[recent,SR]=useState(()=>read('omni:recent',[])),[profile,SP]=useState(()=>read('omni:profile',null)),[account,ST]=useState(false),[nav,SN]=useState(false);
 const filtered=useMemo(()=>tools.filter(t=>(cat==='All tools'||cat===t.cat)&&(t.name+' '+t.desc+' '+t.cat).toLowerCase().includes(query.toLowerCase())),[cat,query]);
