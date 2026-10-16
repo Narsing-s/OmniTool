@@ -5,20 +5,37 @@ export function csvCell(value) {
 
 export function parseCSV(text) {
   const rows = [];
-  let row = [], cell = '', quoted = false;
+  let row = [], cell = '', quoted = false, quoteClosed = false;
   for (let i = 0; i < text.length; i++) {
     const c = text[i];
     if (quoted) {
       if (c === '"' && text[i + 1] === '"') { cell += '"'; i++; }
-      else if (c === '"') quoted = false;
+      else if (c === '"') { quoted = false; quoteClosed = true; }
       else cell += c;
-    } else if (c === '"' && cell === '') quoted = true;
-    else if (c === ',') { row.push(cell); cell = ''; }
-    else if (c === '\n') { row.push(cell.replace(/\r$/, '')); rows.push(row); row = []; cell = ''; }
-    else cell += c;
+      continue;
+    }
+    if (quoteClosed) {
+      if (c === ',') { row.push(cell); cell = ''; quoteClosed = false; }
+      else if (c === '\n' || (c === '\r' && text[i + 1] === '\n')) {
+        row.push(cell); rows.push(row); row = []; cell = ''; quoteClosed = false;
+        if (c === '\r') i++;
+      } else {
+        throw new Error('CSV has unexpected characters after a closing quote.');
+      }
+    } else if (c === '"') {
+      if (cell !== '') throw new Error('CSV quotes must begin at the start of a field.');
+      quoted = true;
+    } else if (c === ',') {
+      row.push(cell); cell = '';
+    } else if (c === '\n' || (c === '\r' && text[i + 1] === '\n')) {
+      row.push(cell); rows.push(row); row = []; cell = '';
+      if (c === '\r') i++;
+    } else {
+      cell += c;
+    }
   }
   if (quoted) throw new Error('CSV contains an unclosed quoted field.');
-  if (cell !== '' || row.length) { row.push(cell.replace(/\r$/, '')); rows.push(row); }
+  if (quoteClosed || cell !== '' || row.length) { row.push(cell); rows.push(row); }
   return rows;
 }
 
