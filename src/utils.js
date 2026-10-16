@@ -136,3 +136,17 @@ export function validateWorkspaceBackup(data, toolIds) {
   }
   return true;
 }
+
+
+export function convertJsonToCSV(input) {
+  const data = typeof input === 'string' ? JSON.parse(input) : input;
+  if (!Array.isArray(data) || data.length === 0 ||
+      data.some(row => !row || typeof row !== 'object' || Array.isArray(row))) {
+    throw new Error('JSON input must be a non-empty array of objects.');
+  }
+  const headers = [...new Set(data.flatMap(row => Object.keys(row)))];
+  if (!headers.length) throw new Error('Provide objects with at least one property.');
+  return [headers.map(csvCell).join(','), ...data.map(row =>
+    headers.map(key => csvCell(row[key] === undefined || row[key] === null ? '' : row[key])).join(',')
+  )].join('\\n');
+}
