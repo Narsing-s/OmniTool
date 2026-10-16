@@ -19,12 +19,12 @@ test('rejects an unclosed quoted field', () => {
 });
 
 test('supports line breaks inside quoted CSV fields', () => {
-  assert.deepEqual(parseCSV('name,note\\r\\nAsha,"line one\\nline two"'), [['name','note'],['Asha','line one\\nline two']]);
+  assert.deepEqual(parseCSV('name,note\r\nAsha,"line one\nline two"'), [['name','note'],['Asha','line one\nline two']]);
 });
 
 test('rejects malformed quote placement and trailing characters', () => {
   assert.throws(() => parseCSV('na"me,age'), /quotes must begin/i);
-  assert.throws(() => parseCSV('name,note\\nAsha,"ok"x'), /after a closing quote/i);
+  assert.throws(() => parseCSV('name,note\nAsha,"ok"x'), /after a closing quote/i);
 });
 
 test('quotes CSV values that contain separators or quotes', () => {
