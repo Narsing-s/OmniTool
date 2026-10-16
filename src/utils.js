@@ -95,3 +95,27 @@ export function compareText(left, right) {
   const lines = edits.map(edit => (edit.type === 'same' ? '  ' : edit.type === 'added' ? '+ ' : '- ') + edit.text);
   return `Summary: ${added} added, ${removed} removed, ${unchanged} unchanged ${unchanged === 1 ? 'line' : 'lines'}\n\n${lines.join('\n')}`;
 }
+
+
+export function validateWorkspaceBackup(data, toolIds) {
+  if (!data || data.format !== 'OmniTool workspace backup' || data.version !== 1 ||
+      !data.settings || typeof data.settings !== 'object' || Array.isArray(data.settings)) return false;
+
+  const allowed = new Set(['omni:dark', 'omni:fav', 'omni:recent', 'omni:profile', 'omni:checklist']);
+  for (const [key, value] of Object.entries(data.settings)) {
+    if (!allowed.has(key)) return false;
+    if (value === null) continue;
+    if (key === 'omni:dark' && typeof value !== 'boolean') return false;
+    if ((key === 'omni:fav' || key === 'omni:recent') &&
+        (!Array.isArray(value) || value.some(id => typeof id !== 'string' || !toolIds.includes(id)))) return false;
+    if (key === 'omni:profile' &&
+        (!value || typeof value !== 'object' || Array.isArray(value) ||
+         typeof value.name !== 'string' || (value.email !== undefined && typeof value.email !== 'string'))) return false;
+    if (key === 'omni:checklist' &&
+        (!value || typeof value !== 'object' || Array.isArray(value) ||
+         !Array.isArray(value.items) || value.items.some(item => typeof item !== 'string') ||
+         !Array.isArray(value.checked) ||
+         value.checked.some(index => !Number.isInteger(index) || index < 0 || index >= value.items.length))) return false;
+  }
+  return true;
+}
