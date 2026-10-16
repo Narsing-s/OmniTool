@@ -148,5 +148,5 @@ export function convertJsonToCSV(input) {
   if (!headers.length) throw new Error('Provide objects with at least one property.');
   return [headers.map(csvCell).join(','), ...data.map(row =>
     headers.map(key => csvCell(row[key] === undefined || row[key] === null ? '' : row[key])).join(',')
-  )].join('\\n');
+  )].join('\n');
 }
