@@ -55,8 +55,8 @@ export function transformLines(text, mode) {
 
 
 export function compareText(left, right) {
-  const a = left.split(/\r?\n/);
-  const b = right.split(/\r?\n/);
+  const a = left === '' ? [] : left.split(/\r?\n/);
+  const b = right === '' ? [] : right.split(/\r?\n/);
   const maxCells = 100000;
   let edits = [];
 
