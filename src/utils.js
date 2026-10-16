@@ -93,5 +93,5 @@ export function compareText(left, right) {
   const removed = edits.filter(edit => edit.type === 'removed').length;
   const unchanged = edits.filter(edit => edit.type === 'same').length;
   const lines = edits.map(edit => (edit.type === 'same' ? '  ' : edit.type === 'added' ? '+ ' : '- ') + edit.text);
-  return `Summary: ${added} added, ${removed} removed, ${unchanged} unchanged lines\n\n${lines.join('\n')}`;
+  return `Summary: ${added} added, ${removed} removed, ${unchanged} unchanged ${unchanged === 1 ? 'line' : 'lines'}\n\n${lines.join('\n')}`;
 }
