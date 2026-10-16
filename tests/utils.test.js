@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { analyzeText, csvCell, parseCSV, compareText, validateWorkspaceBackup } from '../src/utils.js';
+import { analyzeText, csvCell, parseCSV, convertJsonToCSV, compareText, validateWorkspaceBackup } from '../src/utils.js';
 
 test('parses simple CSV rows', () => {
   assert.deepEqual(parseCSV('name,age\nAsha,29\nRavi,31'), [['name','age'],['Asha','29'],['Ravi','31']]);
@@ -31,6 +31,17 @@ test('quotes CSV values that contain separators or quotes', () => {
   assert.equal(csvCell('hello, world'), '"hello, world"');
   assert.equal(csvCell('say "hi"'), '"say ""hi"""');
   assert.equal(csvCell('plain'), 'plain');
+});
+
+test('converts arrays of objects to CSV with unioned columns', () => {
+  assert.equal(convertJsonToCSV([{ name: 'Asha', note: 'hello, world' }, { name: 'Ravi', age: 29 }]),
+    'name,note,age\\nAsha,"hello, world",\\nRavi,,29');
+});
+
+test('rejects invalid JSON-to-CSV row shapes instead of silently dropping data', () => {
+  assert.throws(() => convertJsonToCSV('[{"name":"Asha"},null]'), /non-empty array of objects/i);
+  assert.throws(() => convertJsonToCSV('[{"name":"Asha"},["Ravi"]]'), /non-empty array of objects/i);
+  assert.throws(() => convertJsonToCSV('[{},{}]'), /at least one property/i);
 });
 
 test('analyzes Unicode text, whitespace, UTF-8 bytes and lines', () => {
