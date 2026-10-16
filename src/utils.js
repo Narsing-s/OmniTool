@@ -33,3 +33,22 @@ export function analyzeText(text) {
     lines: text ? text.split('\n').length : 0,
   };
 }
+
+export function transformLines(text, mode) {
+  const lines = text.split(/\r?\n/);
+  switch (mode) {
+    case 'sort-asc': return [...lines].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' })).join('\n');
+    case 'sort-desc': return [...lines].sort((a, b) => b.localeCompare(a, undefined, { sensitivity: 'base' })).join('\n');
+    case 'unique': {
+      const seen = new Set();
+      return lines.filter(line => {
+        if (seen.has(line)) return false;
+        seen.add(line);
+        return true;
+      }).join('\n');
+    }
+    case 'trim': return lines.map(line => line.trim()).join('\n');
+    case 'reverse': return [...lines].reverse().join('\n');
+    default: throw new Error('Choose a valid line operation.');
+  }
+}
