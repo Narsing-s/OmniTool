@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { csvCell, parseCSV } from '../src/utils.js';
+import { analyzeText, csvCell, parseCSV } from '../src/utils.js';
 
 test('parses simple CSV rows', () => {
   assert.deepEqual(parseCSV('name,age\nAsha,29\nRavi,31'), [['name','age'],['Asha','29'],['Ravi','31']]);
