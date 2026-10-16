@@ -21,3 +21,15 @@ export function parseCSV(text) {
   if (cell !== '' || row.length) { row.push(cell.replace(/\r$/, '')); rows.push(row); }
   return rows;
 }
+
+export function analyzeText(text) {
+  const bytes = new TextEncoder().encode(text).length;
+  return {
+    characters: text.length,
+    unicodeCodePoints: Array.from(text).length,
+    utf8Bytes: bytes,
+    utf8Kilobytes: (bytes / 1024).toFixed(3),
+    words: text.trim() ? text.trim().split(/\s+/).length : 0,
+    lines: text ? text.split('\n').length : 0,
+  };
+}
