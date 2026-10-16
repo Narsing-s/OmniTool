@@ -4,12 +4,12 @@ Useful tools for everyday work in one responsive workspace. Built with React and
 
 ## Included
 - Responsive dashboard, search and category filters
-- Word counter, text case converter and text comparison
+- Text analyzer (word/character/line counts and UTF-8 size), text case converter and text comparison
 - JSON formatter/validator and Base64 encoder/decoder
 - Random password generator, percentage calculator and EMI calculator
 - Unix timestamp/date converter, QR code generator with PNG download, URL encoder/decoder, HTML escape/unescape and UUID generator
 - CSV ↔ JSON converter with strict header/column validation, SHA-256 hashing for text/files, Unicode-aware text size analyzer, regex tester, Markdown live preview and HEX/RGB color converter
-- Copy or download tool results as text files
+- Copy or download tool results as text files; one consolidated text analyzer avoids overlapping word-count tools
 - Persistent quick checklist with clear-completed/clear-all controls
 - Workspace backup export/import for theme, favorites, recent tools, local profile and checklist
 - Favorites, recent tools, theme toggle and local profile
