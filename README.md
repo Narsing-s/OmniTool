@@ -11,7 +11,7 @@ Useful tools for everyday work in one responsive workspace. Built with React and
 - CSV ↔ JSON converter with strict header/column validation, SHA-256 hashing for text/files, Unicode-aware text size analyzer, regex tester, Markdown live preview and HEX/RGB color converter
 - Copy or download tool results as text files; one consolidated text analyzer avoids overlapping word-count tools
 - Persistent quick checklist with clear-completed/clear-all controls
-- Workspace backup export/import for theme, favorites, recent tools, local profile and checklist
+- Workspace backup export/import with validation of file format, tool IDs and checklist indexes before restoring theme, favorites, recent tools, local profile and checklist
 - Favorites, recent tools, theme toggle and local profile
 
 ## Run
