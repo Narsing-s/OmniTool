@@ -26,8 +26,8 @@ test('quotes CSV values that contain separators or quotes', () => {
 
 test('analyzes Unicode text, whitespace, UTF-8 bytes and lines', () => {
   assert.deepEqual(analyzeText('Hi 🌍\nthere'), {
-    characters: 10,
-    unicodeCodePoints: 9,
+    characters: 11,
+    unicodeCodePoints: 10,
     utf8Bytes: 13,
     utf8Kilobytes: '0.013',
     words: 3,
