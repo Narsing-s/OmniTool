@@ -64,5 +64,5 @@ test('detects inserted and deleted lines without marking later lines as changed'
 });
 
 test('compares empty text safely', () => {
-  assert.equal(compareText('', ''), 'Summary: 0 added, 0 removed, 1 unchanged lines\n\n  ');
+  assert.equal(compareText('', ''), 'Summary: 0 added, 0 removed, 0 unchanged lines\n\n');
 });
