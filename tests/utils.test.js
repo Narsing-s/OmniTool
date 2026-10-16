@@ -38,3 +38,18 @@ test('analyzes Unicode text, whitespace, UTF-8 bytes and lines', () => {
 test('returns zero words for whitespace-only text', () => {
   assert.equal(analyzeText('  \n\t ').words, 0);
 });
+
+import { transformLines } from '../src/utils.js';
+
+test('sorts lines without changing original input', () => {
+  assert.equal(transformLines('pear\napple\nBanana', 'sort-asc'), 'apple\nBanana\npear');
+});
+
+test('removes duplicate lines while preserving first occurrence', () => {
+  assert.equal(transformLines('one\ntwo\none\n', 'unique'), 'one\ntwo\n');
+});
+
+test('trims or reverses lines', () => {
+  assert.equal(transformLines('  alpha  \n beta ', 'trim'), 'alpha\nbeta');
+  assert.equal(transformLines('a\nb\nc', 'reverse'), 'c\nb\na');
+});
