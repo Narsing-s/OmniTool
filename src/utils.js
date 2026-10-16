@@ -52,3 +52,46 @@ export function transformLines(text, mode) {
     default: throw new Error('Choose a valid line operation.');
   }
 }
+
+
+export function compareText(left, right) {
+  const a = left.split(/\r?\n/);
+  const b = right.split(/\r?\n/);
+  const maxCells = 100000;
+  let edits = [];
+
+  if (a.length * b.length <= maxCells) {
+    const dp = Array.from({ length: a.length + 1 }, () => new Uint32Array(b.length + 1));
+    for (let i = a.length - 1; i >= 0; i--) {
+      for (let j = b.length - 1; j >= 0; j--) {
+        dp[i][j] = a[i] === b[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+      }
+    }
+    let i = 0, j = 0;
+    while (i < a.length || j < b.length) {
+      if (i < a.length && j < b.length && a[i] === b[j]) {
+        edits.push({ type: 'same', text: a[i++] });
+        j++;
+      } else if (j < b.length && (i === a.length || dp[i][j + 1] >= dp[i + 1][j])) {
+        edits.push({ type: 'added', text: b[j++] });
+      } else {
+        edits.push({ type: 'removed', text: a[i++] });
+      }
+    }
+  } else {
+    const count = Math.max(a.length, b.length);
+    for (let i = 0; i < count; i++) {
+      if (i < a.length && i < b.length && a[i] === b[i]) edits.push({ type: 'same', text: a[i] });
+      else {
+        if (i < a.length) edits.push({ type: 'removed', text: a[i] });
+        if (i < b.length) edits.push({ type: 'added', text: b[i] });
+      }
+    }
+  }
+
+  const added = edits.filter(edit => edit.type === 'added').length;
+  const removed = edits.filter(edit => edit.type === 'removed').length;
+  const unchanged = edits.filter(edit => edit.type === 'same').length;
+  const lines = edits.map(edit => (edit.type === 'same' ? '  ' : edit.type === 'added' ? '+ ' : '- ') + edit.text);
+  return `Summary: ${added} added, ${removed} removed, ${unchanged} unchanged lines\n\n${lines.join('\n')}`;
+}
