@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { analyzeText, csvCell, parseCSV, compareText } from '../src/utils.js';
+import { analyzeText, csvCell, parseCSV, compareText, validateWorkspaceBackup } from '../src/utils.js';
 
 test('parses simple CSV rows', () => {
   assert.deepEqual(parseCSV('name,age\nAsha,29\nRavi,31'), [['name','age'],['Asha','29'],['Ravi','31']]);
@@ -65,4 +65,26 @@ test('detects inserted and deleted lines without marking later lines as changed'
 
 test('compares empty text safely', () => {
   assert.equal(compareText('', ''), 'Summary: 0 added, 0 removed, 0 unchanged lines\n\n');
+});
+
+
+test('accepts valid workspace backup settings', () => {
+  assert.equal(validateWorkspaceBackup({
+    format: 'OmniTool workspace backup',
+    version: 1,
+    settings: {
+      'omni:dark': true,
+      'omni:fav': ['json'],
+      'omni:recent': ['json', 'lines'],
+      'omni:profile': { name: 'Guest', email: '' },
+      'omni:checklist': { items: ['Task'], checked: [0] },
+    },
+  }, ['json', 'lines']), true);
+});
+
+test('rejects malformed or unsupported workspace backup values', () => {
+  assert.equal(validateWorkspaceBackup({ format: 'Other', version: 1, settings: {} }, ['json']), false);
+  assert.equal(validateWorkspaceBackup({ format: 'OmniTool workspace backup', version: 1, settings: { 'omni:fav': ['unknown-tool'] } }, ['json']), false);
+  assert.equal(validateWorkspaceBackup({ format: 'OmniTool workspace backup', version: 1, settings: { 'omni:checklist': { items: ['Task'], checked: [3] } } }, ['json']), false);
+  assert.equal(validateWorkspaceBackup({ format: 'OmniTool workspace backup', version: 1, settings: { 'omni:unexpected': 'value' } }, ['json']), false);
 });
